@@ -1,0 +1,15 @@
+
+
+sqlite3 db_name # in terminal for access sqlite3 db
+
+.schema # for viewing all tables
+.mode # change the view in therminal
+     e.g. commands -
+        .mode column
+        .mode markdown # columns and rows will be seperated by dots
+        .mode box # boxed view
+        .mode table # table mode
+
+
+
+# intert query -- insert into todos(title,description,priority,complete) values ('go to store','buy groceries',4,false);

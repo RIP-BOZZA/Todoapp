@@ -13,3 +13,30 @@ sqlite3 db_name # in terminal for access sqlite3 db
 
 
 # intert query -- insert into todos(title,description,priority,complete) values ('go to store','buy groceries',4,false);
+
+
+#for hasing the passwod ,we need bcrypt and passlib
+so bcrypt and passlib are working toghether ,so make sure the dependancy is matched each other ,otherwise crashed
+
+passlib latest verison - 1.7.4
+bcrypt matching this is  - 4.0.1
+
+
+pip install python-multipart  -- used to submit forms to python application
+
+a json web token is created by 3 parts and seperated by 3 dots
+        header : consist of alogoritham used,type  ..etc.Then it is encoded by base64 to create 1st part of token
+        payload : consists of data ,the payload data contains claims ,
+                3 types of claims :
+                        registered : claims that are predefined ,recommended but not mandatory,most used claims are.e.g. iss(issuer) ,sub(subject),exp(expiration time)
+                        public:
+                        private
+                payload is then encoded in base64 to create second part of jwt
+        signature :
+                is created by algoritham  defined in the header,secret can be anything
+
+        e.g. 
+
+ pip install "python-jose[cryptography]" # for handling cryptography ,jwt # default installed with fastapi
+
+ openssl rand -hex 32 # create a 32bit secret key

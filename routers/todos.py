@@ -5,10 +5,12 @@ from sqlalchemy.orm import Session
 from starlette import status
 from pydantic import BaseModel, Field
 from models import Todos
+from .auth import get_current_user
 
 
 router = APIRouter()
 
+user_dependancy=Annotated[dict,Depends(get_current_user)]
 
 # create a db session for using in all apis
 """
@@ -41,21 +43,24 @@ class TodoRequest(BaseModel):
 
 
 @router.get("/")
-async def read_all(db: db_dependancy):
+async def read_all(user:user_dependancy ,db: db_dependancy):
     return db.query(Todos).all()
 
 
 @router.get("/todo/{todo_id}", status_code=status.HTTP_200_OK)
-async def read_todo(db: db_dependancy, todo_id: int = Path(gt=0)):
-    todo_model = db.query(Todos).filter(Todos.id == todo_id).first()
+async def read_todo(user:user_dependancy ,db: db_dependancy, todo_id: int = Path(gt=0)):
+    todo_model = db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id==user.get('id')).first()
     if todo_model is not None:
         return todo_model
     raise HTTPException(status_code=404, detail="id not found")
 
 
 @router.post("/todo", status_code=status.HTTP_201_CREATED)
-async def create_todo(db: db_dependancy, todo_request: TodoRequest):
-    todo_model = Todos(**todo_request.model_dump())
+async def create_todo(user:user_dependancy ,db: db_dependancy, todo_request: TodoRequest):
+    # if user is None:
+    #     raise HTTPException(status_code=401 ,detail="unauthorized")
+    
+    todo_model = Todos(**todo_request.model_dump(),owner_id=user.get('id'))
     db.add(todo_model)
     db.commit()
 

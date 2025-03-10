@@ -84,7 +84,7 @@ def create_access_token(username:str ,user_id:int ,expires_delta:timedelta):
     return jwt.encode(encode ,SECRET_KEY,algorithm=ALGORITHAM)
 
 
-async def get_current_user(token:Annotated[str ,Depends(OAuth2PasswordBearer)]):
+async def get_current_user(token:Annotated[str ,Depends(oauth2_bearer)]):
     """
     function to set validate all bearer token in header
     """
